@@ -65,7 +65,6 @@
 					<div class="form-group">
 						<select name="level" class="form-control" required>
 							<option value="">Pilih Level User</option>
-							<option selected value="superadmin">Super Admin</option>
 							<option value="admin">Admin</option>
 							<option value="petugas">Petugas</option>
 
