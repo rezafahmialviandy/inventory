@@ -2,7 +2,7 @@
 
 	session_start();
 	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
-	$koneksi = new mysqli("localhost","root","","invent");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 
 
 	?>
