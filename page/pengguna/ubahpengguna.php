@@ -1,170 +1,102 @@
-
-
 <?php
- $id = $_GET['id'];
- $sql2 = $koneksi->query("select * from users where id = '$id'");
- $tampil = $sql2->fetch_assoc();
- 
- $level = $tampil['level'];
+$id = intval($_GET['id']);
+$sql2 = $koneksi->prepare("SELECT * FROM users WHERE id = ?");
+$sql2->bind_param('i', $id);
+$sql2->execute();
+$result = $sql2->get_result();
+$tampil = $result->fetch_assoc();
+?>
 
- 
- 
- 
- ?>
- 
-  <div class="container-fluid">
+<div class=\"container-fluid\">
+    <div class=\"card shadow mb-4\">
+        <div class=\"card-header py-3\">
+            <h6 class=\"m-0 font-weight-bold text-primary\">Ubah User</h6>
+        </div>
+        <div class=\"card-body\">
+            <form method=\"POST\" enctype=\"multipart/form-data\">
+                <div class=\"form-group\">
+                    <label>NIK</label>
+                    <input type=\"number\" name=\"nik\" value=\"<?= htmlspecialchars($tampil['nik']) ?>\" class=\"form-control\" required />
+                </div>
 
-          <!-- DataTales Example -->
-          <div class="card shadow mb-4">
-            <div class="card-header py-3">
-              <h6 class="m-0 font-weight-bold text-primary">Ubah User</h6>
-            </div>
-            <div class="card-body">
-              <div class="table-responsive">
-							
-							
-							<div class="body">
+                <div class=\"form-group\">
+                    <label>Nama</label>
+                    <input type=\"text\" name=\"nama\" value=\"<?= htmlspecialchars($tampil['nama']) ?>\" class=\"form-control\" required />
+                </div>
 
-							<form method="POST" enctype="multipart/form-data">
-							
-							<label for="">NIK</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="number" name="nik" value="<?php echo $tampil['nik']; ?>" class="form-control" />
-	 
-							</div>
-                            </div>
-							
-							<label for="">Nama</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="text" name="nama" value="<?php echo $tampil['nama']; ?>" class="form-control" />
-	 
-							</div>
-                            </div>
-							
-							<label for="">Telepon</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="number" name="telepon" value="<?php echo $tampil['telepon']; ?>" class="form-control" />
-	 
-							</div>
-                            </div>
-							
-							<label for="">Username</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="text" name="username" value="<?php echo $tampil['username']; ?>" class="form-control" />
-                          	 
-								</div>
-                            </div>
-							
-							<label for="">Password</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="text" name="password" value="<?php echo $tampil['password']; ?>" class="form-control" />
-                          	 
-								</div>
-                            </div>
-							
-							
-							<label for="">Level</label>
-							 <div class="form-group">
-                               <div class="form-line">
-                                    <select name="level" class="form-control show-tick">
-                                        <option value="">-- Pilih Level --</option>
-										 <option value="superadmin">Super Admin</option>
-                                        <option value="admin">Admin</option>
-                                        <option value="petugas">Petugas</option>
-                     
-                                    </select>
-                            </div>
-							</div>
-							
-							
-							<label for="">Foto</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <img src="img/<?php echo $tampil['foto']; ?> "width="50" height="50"  alt="">
-									 
-							</div>
-                            </div>
-							
-							
-							<label for="">Ganti Foto</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="file" name="foto" class="form-control" />
-									 
-							</div>
-                            </div>
-							
-						
-							
-							<input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
-							
-							</form>
-							
-							
-							
-							<?php
-							
-							if (isset($_POST['simpan'])) {
-								
-								$nik= $_POST['nik'];
-								$nama= $_POST['nama'];
-								$telepon= $_POST['telepon'];
-								$username= $_POST['username'];
-								$password= $_POST['password'];
-								$level= $_POST['level'];
-								
-								$foto= $_FILES['foto']['name'];
-								$lokasi= $_FILES['foto']['tmp_name'];
-								
-								if (!empty($lokasi)) {
-								$upload= move_uploaded_file($lokasi, "img/".$foto);
-								
-								
-								
-								$sql = $koneksi->query("update users set nik='$nik', nama='$nama', telepon='$telepon', username='$username', level='$level', foto='$foto' where id='$id'"); 
-								
-								if ($sql) {
-									?>
-									
-										<script type="text/javascript">
-										alert("Data Berhasil Diubah");
-										window.location.href="?page=pengguna";
-										</script>
-										
-										<?php
-								}
-							
-								}
-								
-								else {
-									
-								$sql = $koneksi->query("update users set nik='$nik', username='$username', nama='$nama', telepon='$telepon', level='$level' where id='$id'"); 
-								
-								if ($sql) {
-									?>
-									
-										<script type="text/javascript">
-										alert("Data Berhasil Diubah");
-										window.location.href="?page=pengguna";
-										</script>
-										
-										<?php
-								}
-							
-								}
-							
-							}
-							?>
-										
-										
-										
-								
-								
-								
-								
-								
+                <div class=\"form-group\">
+                    <label>Telepon</label>
+                    <input type=\"number\" name=\"telepon\" value=\"<?= htmlspecialchars($tampil['telepon']) ?>\" class=\"form-control\" required />
+                </div>
+
+                <div class=\"form-group\">
+                    <label>Username</label>
+                    <input type=\"text\" name=\"username\" value=\"<?= htmlspecialchars($tampil['username']) ?>\" class=\"form-control\" required />
+                </div>
+
+                <div class=\"form-group\">
+                    <label>Password (Isi jika ingin mengganti)</label>
+                    <input type=\"password\" name=\"password\" class=\"form-control\" placeholder=\"Kosongkan jika tidak ingin mengganti\" />
+                </div>
+
+                <div class=\"form-group\">
+                    <label>Level</label>
+                    <select name=\"level\" class=\"form-control\" required>
+                        <option value=\"\">-- Pilih Level --</option>
+                        <option value=\"superadmin\" <?= ($tampil['level'] == 'superadmin') ? 'selected' : '' ?>>Super Admin</option>
+                        <option value=\"admin\" <?= ($tampil['level'] == 'admin') ? 'selected' : '' ?>>Admin</option>
+                        <option value=\"petugas\" <?= ($tampil['level'] == 'petugas') ? 'selected' : '' ?>>Petugas</option>
+                    </select>
+                </div>
+
+                <div class=\"form-group\">
+                    <label>Foto Saat Ini</label><br>
+                    <img src=\"img/<?= htmlspecialchars($tampil['foto']) ?>\" width=\"50\" height=\"50\" alt=\"Foto User\">
+                </div>
+
+                <div class=\"form-group\">
+                    <label>Ganti Foto</label>
+                    <input type=\"file\" name=\"foto\" class=\"form-control\" />
+                </div>
+
+                <button type=\"submit\" name=\"simpan\" class=\"btn btn-primary\">Simpan</button>
+            </form>
+
+            <?php
+            if (isset($_POST['simpan'])) {
+                $nik = $_POST['nik'];
+                $nama = $_POST['nama'];
+                $telepon = $_POST['telepon'];
+                $username = $_POST['username'];
+                $level = $_POST['level'];
+                $password = $_POST['password'];
+
+                $foto = $_FILES['foto']['name'];
+                $lokasi = $_FILES['foto']['tmp_name'];
+
+                if (!empty($foto)) {
+                    move_uploaded_file($lokasi, \"img/\" . basename($foto));
+                    $query = $koneksi->prepare(\"UPDATE users SET nik=?, nama=?, telepon=?, username=?, level=?, foto=? WHERE id=?\");
+                    $query->bind_param('ssssssi', $nik, $nama, $telepon, $username, $level, $foto, $id);
+                } else {
+                    $query = $koneksi->prepare(\"UPDATE users SET nik=?, nama=?, telepon=?, username=?, level=? WHERE id=?\");
+                    $query->bind_param('sssssi', $nik, $nama, $telepon, $username, $level, $id);
+                }
+
+                if (!empty($password)) {
+                    $hashed_password = md5($password);
+                    $query_pass = $koneksi->prepare(\"UPDATE users SET password=? WHERE id=?\");
+                    $query_pass->bind_param('si', $hashed_password, $id);
+                    $query_pass->execute();
+                }
+
+                if ($query->execute()) {
+                    echo '<script>alert(\"Data Berhasil Diubah\"); window.location.href=\"?page=pengguna\";</script>';
+                } else {
+                    echo '<script>alert(\"Gagal mengubah data\");</script>';
+                }
+            }
+            ?>
+        </div>
+    </div>
+</div>

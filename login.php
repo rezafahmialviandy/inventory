@@ -78,7 +78,7 @@
 						<br>
 
 				</form>
-				<br><center><p>Repost by <a href='https://stokcoding.com/' title='StokCoding.com' target='_blank'>StokCoding.com</a></p></center>
+				<br><center><p>Copyright © Inventory System 2025   <a href='https://dkriuk.com/' title='Dkriuk' target='_blank'>Dkriuk Bekasi</a></p></center>
 
 
 			</div>
