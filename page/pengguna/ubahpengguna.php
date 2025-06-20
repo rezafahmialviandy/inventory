@@ -43,7 +43,6 @@ $tampil = $result->fetch_assoc();
                     <label>Level</label>
                     <select name="level" class="form-control" required>
                         <option value="">-- Pilih Level --</option>
-                        <option value="superadmin" <?= ($tampil['level'] == 'superadmin') ? 'selected' : '' ?>>Super Admin</option>
                         <option value="admin" <?= ($tampil['level'] == 'admin') ? 'selected' : '' ?>>Admin</option>
                         <option value="petugas" <?= ($tampil['level'] == 'petugas') ? 'selected' : '' ?>>Petugas</option>
                     </select>

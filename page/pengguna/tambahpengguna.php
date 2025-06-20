@@ -62,7 +62,6 @@
                                <div class="form-line">
                                     <select name="level" class="form-control show-tick">
                                         <option value="">-- Pilih Level --</option>
-										 <option value="superadmin">Super Admin</option>
                                         <option value="admin">Admin</option>
                                         <option value="petugas">Petugas</option>
                      

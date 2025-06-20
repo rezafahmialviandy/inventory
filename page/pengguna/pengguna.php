@@ -33,10 +33,6 @@
                
                   <tbody>
                     <?php 
-									echo '<pre>';
-print_r($data);
-echo '</pre>';
-
 									$no = 1;
 									$sql = $koneksi->query("select * from users");
 									while ($data = $sql->fetch_assoc()) {
