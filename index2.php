@@ -31,6 +31,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
+ 	<link rel="icon" type="image/x-icon" href="img/dkriuk.jpg">
 
   <title>Inventory Barang</title>
 
@@ -344,19 +345,19 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
       <!-- End of Main Content -->
   
    <!-- Footer -->
-      <footer class="sticky-footer bg-white">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019 | Repost by <a href='https://stokcoding.com/' title='StokCoding.com' target='_blank'>StokCoding.com</a>
-            </span>
-          </div>
-        </div>
-      </footer>
+
       <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
-
+      <footer class="sticky-footer bg-white" style="">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+          <span>Copyright  &copy; Inventory System 2025 | Created by <a href='https://dkriuk.com/' title='Drkiuk' target='_blank'>Dkriuk Bekasi</a>
+            </span>
+          </div>
+        </div>
+      </footer>
   </div>
   <!-- End of Page Wrapper -->
   </div>

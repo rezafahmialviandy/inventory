@@ -1,7 +1,5 @@
 
 <?php
-mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
-	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	session_start();
 	
 	
@@ -9,7 +7,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 
 	
-if(empty($_SESSION['admin'])){
+if(empty($_SESSION['superadmin'])){
     
     header("location:login.php");
   }
@@ -31,7 +29,7 @@ if(empty($_SESSION['admin'])){
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
+	<link rel="icon" type="image/x-icon" href="img/dkriuk.jpg">
   <title>Inventory Barang</title>
 
   <!-- Custom fonts for this template-->
@@ -407,20 +405,21 @@ if(empty($_SESSION['admin'])){
 
   </style>
    <!-- Footer -->
-      <footer class="sticky-footer bg-white" style="">
-        <div class="container my-auto">
-          <div class="copyright text-center my-auto">
-            <span>Copyright &copy; Your Website 2019 | Repost by <a href='https://stokcoding.com/' title='StokCoding.com' target='_blank'>StokCoding.com</a>
-            </span>
-          </div>
-        </div>
-      </footer>
+
       <!-- End of Footer -->
 
     </div>
     <!-- End of Content Wrapper -->
-
+      <footer class="sticky-footer bg-white" style="">
+        <div class="container my-auto">
+          <div class="copyright text-center my-auto">
+            <span>Copyright  &copy; Inventory System 2025 | Created by <a href='https://dkriuk.com/' title='Drkiuk' target='_blank'>Dkriuk Bekasi</a>
+            </span>
+          </div>
+        </div>
+      </footer>
   </div>
+  
   <!-- End of Page Wrapper -->
   </div>
 

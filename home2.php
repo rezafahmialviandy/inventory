@@ -1,4 +1,4 @@
-
+	<link rel="icon" type="image/x-icon" href="img/dkriuk.jpg">
 <br>
 
        <!-- Begin Page Content -->
@@ -74,7 +74,7 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <a  href="?page=barangmasuk"> <div class="text-xs font-weight-bold text-success text-uppercase mb-1"><h4>Barang Masuk</h4></div>
+                        <a  href="?page=barangmasuk"><div class="text-xs font-weight-bold text-success text-uppercase mb-1"><h4>Barang Masuk</h4></div></a>
                    
                     </div>
                     <div class="col-auto">
@@ -91,7 +91,7 @@
                 <div class="card-body">
                   <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                     <a  href="?page=barangkeluar"> <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"><h4>Barang Keluar</h4></div>
+                     <a  href="?page=barangkeluar"><div class="text-xs font-weight-bold text-warning text-uppercase mb-1"><h4>Barang Keluar</h4></div></a>
            
                     </div>
                     <div class="col-auto">

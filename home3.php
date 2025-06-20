@@ -1,4 +1,4 @@
-
+	<link rel="icon" type="image/x-icon" href="img/dkriuk.jpg">
 <br>
 
        <!-- Begin Page Content -->

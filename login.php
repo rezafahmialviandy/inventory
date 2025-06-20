@@ -13,6 +13,7 @@
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" type="image/x-icon" href="img/dkriuk.jpg">
 	<title>Login Sistem</title>
 
 	<!-- Bootstrap -->
@@ -65,7 +66,7 @@
 					<div class="form-group">
 						<select name="level" class="form-control" required>
 							<option value="">Pilih Level User</option>
-							<option value="admin">Admin</option>
+							<option value="superadmin">Admin</option>
 							<option value="petugas">Petugas</option>
 
 						</select>
@@ -77,7 +78,7 @@
 						<br>
 
 				</form>
-				<br><center><p>Copyright © Inventory System 2025   <a href='https://dkriuk.com/' title='Dkriuk' target='_blank'>Dkriuk Bekasi</a></p></center>
+				<br><center><p>Copyright © Inventory System 2025  <a href='https://dkriuk.com/' title='Dkriuk' target='_blank'>Dkriuk Bekasi</a></p></center>
 
 
 			</div>
@@ -90,7 +91,7 @@
 </body>
 </html>
 
-	<?php
+<?php
 session_start();
 
 $username = $_POST['username'];
@@ -107,8 +108,8 @@ if ($login) {
     // Check if user exists and password matches (MD5 hash comparison)
     if ($ketemu >= 1 && md5($password) == $data['password']) {
         // User exists and password is correct
-        if ($data['level'] == 'admin' && $level == 'admin') {
-            $_SESSION['admin'] = $data['id'];
+        if ($data['level'] == 'superadmin' && $level == 'superadmin') {
+            $_SESSION['superadmin'] = $data['id'];
             header("location:index3.php");
         } 
         else if ($data['level'] == 'petugas' && $level == 'petugas') {
@@ -120,6 +121,6 @@ if ($login) {
         echo '<center><div class="alert alert-danger">Upss...!!! Login gagal. Silakan Coba Kembali</div></center>';
     }
 }
-
 ?>
+
 
