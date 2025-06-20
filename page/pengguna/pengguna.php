@@ -50,7 +50,7 @@
 								
 											<td><?php echo $data['password'] ?></td>
 											<td><?php echo $data['level'] ?></td>
-											<td><img src="img/<?php echo $data['foto'] ?>"width="50" height="50" alt=""> </td>
+											<td><img src="img/logodkriuk.png"width="50" height="50" alt=""> </td>
 										
 											<td>
 											<a href="?page=pengguna&aksi=ubahpengguna&id=<?php echo $data['id'] ?>" class="btn btn-success" >Ubah</a>
