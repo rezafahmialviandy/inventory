@@ -6,8 +6,8 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 	
 	
 	
-	$koneksi = new mysqli("localhost","root","","invent");
-	
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
+
 	 if(empty($_SESSION['petugas'])){
     
     header("location:login.php");

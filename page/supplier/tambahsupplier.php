@@ -4,7 +4,8 @@
 
 
 
-$koneksi = new mysqli("localhost","root","","invent");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
+
 $no = mysqli_query($koneksi, "select kode_supplier from tb_supplier order by kode_supplier desc");
 $kdsupplier = mysqli_fetch_array($no);
 $kode = $kdsupplier['kode_supplier'];

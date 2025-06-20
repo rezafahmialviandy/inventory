@@ -7,7 +7,8 @@ if (isset($_POST['submit']))
 
 
 
-	$koneksi = new mysqli("localhost","root","","invent");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
+
 
 	header("Content-type: application/vnd-ms-excel");
 	header("Content-Disposition: attachment; filename=Laporan_Barang_Masuk (".date('d-m-Y').").xls");

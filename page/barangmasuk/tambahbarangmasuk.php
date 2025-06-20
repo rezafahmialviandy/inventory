@@ -12,7 +12,8 @@
   
   <?php 
 
-$koneksi = new mysqli("localhost","root","","invent");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
+
 $no = mysqli_query($koneksi, "select id_transaksi from barang_masuk order by id_transaksi desc");
 $idtran = mysqli_fetch_array($no);
 $kode = $idtran['id_transaksi'];
