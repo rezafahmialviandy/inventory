@@ -1,15 +1,16 @@
 
 <?php
+	
+	mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
+	error_reporting(E_ALL ^ (E_NOTICE | E_WARNING));
 	session_start();
-	
-	
 	
 	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 
 	
 if(empty($_SESSION['superadmin'])){
     
-    header("location:login.php");
+    header("location:index.php");
   }
 
 
@@ -282,14 +283,13 @@ if(empty($_SESSION['superadmin'])){
 					   include "page/jenisbarang/jenisbarang.php";
 				   }
 				    if ($aksi == "tambahjenis") {
-					   include "page//jenisbarang/tambahjenis.php";
+					   include "page/jenisbarang/tambahjenis.php";
 				   }
-				    if ($aksi == "ubahsupplier") {
-					   include "page/supplier/ubahsupplier.php";
-				   }
-				   
-				    if ($aksi == "hapussupplier") {
-					   include "page/supplier/hapussupplier.php";
+				    if ($aksi == "ubahjenis") {
+					   include "page/jenisbarang/ubahjenis.php";
+				   } 
+				    if ($aksi == "hapusjenis") {
+					   include "page/jenisbarang/hapusjenis.php";
 				   }
 			   }
 			   

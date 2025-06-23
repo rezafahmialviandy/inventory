@@ -41,8 +41,8 @@
                                          
 
 											<td>
-											<a href="?page=supplier&aksi=ubahsupplier&id=<?php echo $data['jenis_barang'] ?>" class="btn btn-success" >Ubah</a>
-											<a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=supplier&aksi=hapussupplier&id=<?php echo $data['kode_supplier'] ?>" class="btn btn-danger" >Hapus</a>
+											<a href="?page=jenisbarang&aksi=ubahjenis&id=<?php echo $data['id'] ?>" class="btn btn-success" >Ubah</a>
+											<a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=jenisbarang&aksi=hapusjenis&id=<?php echo $data['id'] ?>" class="btn btn-danger" >Hapus</a>
 											</td>
                                         </tr>
 									<?php }?>

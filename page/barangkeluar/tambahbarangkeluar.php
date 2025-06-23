@@ -115,13 +115,6 @@ $tanggal_keluar = date("Y-m-d");
 							
 							<div class="tampung1"></div>
 							
-							<label for="">Tujuan</label>
-                            <div class="form-group">
-                               <div class="form-line">
-                                <input type="text" name="tujuan" class="form-control" />	 
-							</div>
-                            </div>
-						
 						
 							
 							<input type="submit" name="simpan" value="Simpan" class="btn btn-primary">

@@ -22,7 +22,6 @@
 											
 											<th>Telepon</th>
 											<th>Username</th>
-                                            <th>Password</th>
                                             <th>Level</th>
                                             <th>Foto</th>
 											<th>Aksi</th>
@@ -46,8 +45,6 @@
 											
 											<td><?php echo $data['telepon'] ?></td>
                                             <td><?php echo $data['username'] ?></td>
-								
-											<td><?php echo $data['password'] ?></td>
 											<td><?php echo $data['level'] ?></td>
 											<td><img src="img/<?php echo $data['foto'] ?>"width="50" height="50" alt=""> </td>
 										

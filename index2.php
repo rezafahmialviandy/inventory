@@ -10,7 +10,7 @@ mysqli_report (MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 	 if(empty($_SESSION['petugas'])){
     
-    header("location:login.php");
+    header("location:index.php");
   }
 
 

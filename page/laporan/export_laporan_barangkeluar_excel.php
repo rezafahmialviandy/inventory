@@ -30,7 +30,6 @@ if (isset($_POST['submit']))
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>			
 											<th>Jumlah Keluar</th>
-											<th>Tujuan</th>
 
                                         </tr>
 	
@@ -50,7 +49,6 @@ if (isset($_POST['submit']))
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['tujuan'] ?></td>
 
                                         </tr>
 									<?php }?>
@@ -63,7 +61,7 @@ if (isset($_POST['submit']))
 	
 	<?php
 
-	$koneksi = new mysqli("localhost","root","","inventori");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 	
 
 	$bln = $_POST['bln'] ;
@@ -85,7 +83,6 @@ if (isset($_POST['submit']))
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>			
 											<th>Jumlah Keluar</th>
-											<th>Tujuan</th>
 
                                         </tr>
                                     </thead>
@@ -107,7 +104,6 @@ if (isset($_POST['submit']))
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['tujuan'] ?></td>
 
                                         </tr>
 						<?php 
@@ -134,7 +130,6 @@ if (isset($_POST['submit']))
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>			
 											<th>Jumlah Keluar</th>
-											<th>Tujuan</th>
 
                                         </tr>
                                     </thead>
@@ -155,7 +150,6 @@ if (isset($_POST['submit']))
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['tujuan'] ?></td>
 
                                         </tr>
 						<?php 

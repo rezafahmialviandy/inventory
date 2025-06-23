@@ -72,7 +72,7 @@ if (isset($_POST['submit']))
 	
 	<?php
 
-	$koneksi = new mysqli("localhost","root","","inventori");
+	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 	
 
 	$bln = $_POST['bln'] ;
