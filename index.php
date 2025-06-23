@@ -429,9 +429,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
                     <i class="fas fa-arrow-right" style="margin-left: 10px;"></i>
                 </button>
                 
-                <div class="forgot-password">
-                    <a href="#">I can't remember my password</a>
-                </div>
+                
             </form>
         </div>
     </div>
