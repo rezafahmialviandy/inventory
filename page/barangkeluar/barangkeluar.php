@@ -22,7 +22,6 @@
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>
 											<th>Jumlah Keluar</th>
-											<th>Satuan</th>
 											
 											<th>Pengaturan</th>
                                          
@@ -46,7 +45,6 @@
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['satuan'] ?></td>
 								
 
 											<td>

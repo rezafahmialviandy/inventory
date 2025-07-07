@@ -17,12 +17,11 @@
 -- Dumping structure for table pora5278_inventrizki.barang_keluar
 CREATE TABLE IF NOT EXISTS `barang_keluar` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_transaksi` varchar(100) NOT NULL,
+  `id_transaksi` varchar(10) NOT NULL,
   `tanggal` date NOT NULL,
-  `kode_barang` varchar(100) NOT NULL,
-  `nama_barang` varchar(100) NOT NULL,
-  `jumlah` varchar(100) NOT NULL,
-  `satuan` varchar(100) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL DEFAULT '0',
+  `nama_barang` varchar(50) NOT NULL DEFAULT '0',
+  `jumlah` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
@@ -31,49 +30,55 @@ CREATE TABLE IF NOT EXISTS `barang_keluar` (
 -- Dumping structure for table pora5278_inventrizki.barang_masuk
 CREATE TABLE IF NOT EXISTS `barang_masuk` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_transaksi` varchar(100) NOT NULL,
+  `id_transaksi` varchar(10) NOT NULL,
   `tanggal` date NOT NULL,
-  `kode_barang` varchar(100) NOT NULL,
-  `nama_barang` varchar(100) NOT NULL,
-  `pengirim` varchar(100) NOT NULL,
-  `jumlah` varchar(100) NOT NULL,
-  `satuan` varchar(100) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL,
+  `nama_barang` varchar(50) NOT NULL,
+  `pengirim` varchar(20) NOT NULL,
+  `jumlah` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table pora5278_inventrizki.barang_masuk: ~0 rows (approximately)
+-- Dumping data for table pora5278_inventrizki.barang_masuk: ~4 rows (approximately)
+INSERT INTO `barang_masuk` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `nama_barang`, `pengirim`, `jumlah`) VALUES
+	(1, 'TRM-072500', '2025-07-07', 'BAR-072500', 'Ayam', 'PT Gading Murni', 100),
+	(2, 'TRM-072500', '2025-08-07', 'BAR-072500', 'Ayam', 'PT Gading Murni', 150),
+	(3, 'TRM-072500', '2025-09-07', 'BAR-072500', 'Ayam', 'PT Gading Murni', 250),
+	(4, 'TRM-072500', '2025-10-07', 'BAR-072500', 'Ayam', 'PT Gading Murni', 120);
 
 -- Dumping structure for table pora5278_inventrizki.gudang
 CREATE TABLE IF NOT EXISTS `gudang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `kode_barang` varchar(100) NOT NULL,
-  `nama_barang` varchar(100) NOT NULL,
-  `jenis_barang` varchar(100) NOT NULL,
-  `jumlah` varchar(250) NOT NULL,
-  `satuan` varchar(100) NOT NULL,
+  `kode_barang` varchar(10) NOT NULL,
+  `nama_barang` varchar(50) NOT NULL,
+  `jenis_barang` varchar(10) NOT NULL,
+  `jumlah` int(11) NOT NULL DEFAULT 0,
+  `satuan` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
--- Dumping data for table pora5278_inventrizki.gudang: ~1 rows (approximately)
+-- Dumping data for table pora5278_inventrizki.gudang: ~3 rows (approximately)
 INSERT INTO `gudang` (`id`, `kode_barang`, `nama_barang`, `jenis_barang`, `jumlah`, `satuan`) VALUES
-	(17, 'BAR-0625001', 'Ayam', 'Barang Basah', '0', 'PCS');
+	(18, 'BAR-072500', 'Ayam', 'Barang Bas', 620, 'PCS'),
+	(19, 'BAR-072500', 'Tepung', 'Barang Ker', 0, 'PCS'),
+	(20, 'BAR-072500', 'plastik', 'Barang Ker', 0, 'PCS');
 
 -- Dumping structure for table pora5278_inventrizki.jenis_barang
 CREATE TABLE IF NOT EXISTS `jenis_barang` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `jenis_barang` varchar(100) NOT NULL,
+  `jenis_barang` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
 -- Dumping data for table pora5278_inventrizki.jenis_barang: ~2 rows (approximately)
 INSERT INTO `jenis_barang` (`id`, `jenis_barang`) VALUES
-	(1, 'Barang Basah'),
-	(2, 'Barang Kering');
+	(1, 'Barang Bas'),
+	(2, 'Barang Ker');
 
 -- Dumping structure for table pora5278_inventrizki.satuan
 CREATE TABLE IF NOT EXISTS `satuan` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `satuan` varchar(100) NOT NULL,
+  `satuan` varchar(10) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 

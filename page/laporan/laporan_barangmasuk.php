@@ -122,7 +122,6 @@ echo "</select>";
 										
                                             
 											<th>Jumlah Masuk</th>
-											<th>Satuan Barang</th>
 										
                                          
                                         </tr>
@@ -149,7 +148,6 @@ echo "</select>";
 									
                                          
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['satuan'] ?></td>
 								
 
                                         </tr>

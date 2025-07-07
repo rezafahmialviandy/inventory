@@ -28,7 +28,6 @@
 										
                                             
 											<th>Jumlah Masuk</th>
-											<th>Satuan Barang</th>
 											<th>Pengaturan</th>
                                          
                                         </tr>
@@ -55,7 +54,6 @@
 									
                                          
 											<td><?php echo $data['jumlah'] ?></td>
-											<td><?php echo $data['satuan'] ?></td>
 											
 								
 
