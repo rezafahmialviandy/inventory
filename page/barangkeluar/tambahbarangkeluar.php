@@ -94,8 +94,6 @@ $tanggal_keluar = date("Y-m-d");
             <input type="hidden" name="satuan" id="satuan">
             <input type="hidden" name="stok" id="stok">
 
-            <div class="tampung"></div>
-
             <label for="">Jumlah</label>
             <div class="form-group">
               <div class="form-line">
@@ -113,50 +111,49 @@ $tanggal_keluar = date("Y-m-d");
             <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
           </form>
 
-			<?php
-			if (isset($_POST['simpan'])) {
-				$id_transaksi = $_POST['id_transaksi'];
-				$tanggal = $_POST['tanggal_keluar'];
-				$barang = $_POST['barang'];
-				$pecah_barang = explode(".", $barang);
-				$kode_barang = $pecah_barang[0];
-				$nama_barang = $pecah_barang[1];
-				$satuan = isset($pecah_barang[2]) ? $pecah_barang[2] : '';
-				$jumlah = isset($_POST['jumlahkeluar']) ? intval($_POST['jumlahkeluar']) : 0;
+<?php
+if (isset($_POST['simpan'])) {
+    $id_transaksi = $_POST['id_transaksi'];
+    $tanggal = $_POST['tanggal_keluar'];
+    $barang = $_POST['barang'];
+    $pecah_barang = explode(".", $barang);
+    $kode_barang = $pecah_barang[0];
+    $nama_barang = $pecah_barang[1];
+    $satuan = isset($pecah_barang[2]) ? $pecah_barang[2] : '';
+    $jumlah = isset($_POST['jumlahkeluar']) ? intval($_POST['jumlahkeluar']) : 0;
 
-				// Ambil stok terkini langsung dari database!
-				$cekStok = $koneksi->query("SELECT jumlah FROM gudang WHERE kode_barang='$kode_barang'");
-				$stok_db = 0;
-				if($cekStok && $row = $cekStok->fetch_assoc()) {
-					$stok_db = intval($row['jumlah']);
-				}
+    // Ambil stok terkini langsung dari database!
+    $cekStok = $koneksi->query("SELECT jumlah FROM gudang WHERE kode_barang='$kode_barang'");
+    $stok_db = 0;
+    if($cekStok && $row = $cekStok->fetch_assoc()) {
+        $stok_db = intval($row['jumlah']);
+    }
 
-				$sisa = $stok_db - $jumlah;
+    $sisa = $stok_db - $jumlah;
 
-				if ($jumlah < 1) {
-					echo "<script>alert('Jumlah Keluar minimal 1!'); window.history.back();</script>";
-				} else if ($jumlah > $stok_db || $sisa < 0) {
-					echo "<script>
-					alert('Stok Barang Tidak Cukup, Transaksi Tidak Dapat Dilakukan');
-					window.location.href='?page=barangkeluar&aksi=tambahbarangkeluar';
-					</script>";
-				} else {
-					$sql = $koneksi->query("INSERT INTO barang_keluar (id_transaksi, tanggal, kode_barang, nama_barang, jumlah) VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah')");
-					$sql2 = $koneksi->query("UPDATE gudang SET jumlah=jumlah-$jumlah WHERE kode_barang='$kode_barang'");
-					if ($sql && $sql2) {
-						echo "<script>
-						alert('Simpan Data Berhasil');
-						window.location.href='?page=barangkeluar';
-						</script>";
-					} else {
-						echo "<script>
-						alert('Gagal Simpan Data!');
-						</script>";
-					}
-				}
-			}
-
-			?>
+    if ($jumlah < 1) {
+        echo "<script>alert('Jumlah Keluar minimal 1!'); window.history.back();</script>";
+    } else if ($jumlah > $stok_db || $sisa < 0) {
+        echo "<script>
+        alert('Stok Barang Tidak Cukup, Transaksi Tidak Dapat Dilakukan');
+        window.location.href='?page=barangkeluar&aksi=tambahbarangkeluar';
+        </script>";
+    } else {
+        $sql = $koneksi->query("INSERT INTO barang_keluar (id_transaksi, tanggal, kode_barang, nama_barang, jumlah) VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah')");
+        $sql2 = $koneksi->query("UPDATE gudang SET jumlah=jumlah-$jumlah WHERE kode_barang='$kode_barang'");
+        if ($sql && $sql2) {
+            echo "<script>
+            alert('Simpan Data Berhasil');
+            window.location.href='?page=barangkeluar';
+            </script>";
+        } else {
+            echo "<script>
+            alert('Gagal Simpan Data!');
+            </script>";
+        }
+    }
+}
+?>
         </div>
       </div>
     </div>

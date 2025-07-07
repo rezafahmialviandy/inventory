@@ -110,7 +110,7 @@ $tanggal_masuk = date("Y-m-d");
           </form>
 
           <?php
-         if (isset($_POST['simpan'])) {
+        if (isset($_POST['simpan'])) {
     $id_transaksi = $_POST['id_transaksi'];
     $tanggal = $_POST['tanggal_masuk'];
     $barang = $_POST['barang'];
@@ -124,20 +124,17 @@ $tanggal_masuk = date("Y-m-d");
     if ($jumlah < 1) {
         echo "<script>alert('Jumlah Masuk minimal 1!'); window.history.back();</script>";
     } else {
+        // 1. Simpan ke barang_masuk
         $sql = $koneksi->query("INSERT INTO barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah, pengirim)
-              VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$pengirim')");
-        // UPDATE stok di gudang!
+            VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$pengirim')");
+        // 2. Update stok di gudang sesuai kode_barang
         $koneksi->query("UPDATE gudang SET jumlah = jumlah + $jumlah WHERE kode_barang = '$kode_barang'");
         if ($sql) {
-            ?>
-            <script type="text/javascript">
-                alert("Simpan Data Berhasil");
-                window.location.href = "?page=barangmasuk";
-            </script>
-            <?php
+            echo "<script>alert('Simpan Data Berhasil'); window.location.href = '?page=barangmasuk';</script>";
         }
     }
 }
+
 
           ?>
         </div>
