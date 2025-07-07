@@ -42,15 +42,27 @@
         			</select>
         		</div>
         		<div class="col-md-3">
-        		<?php
-$now=date('Y');
+<?php
+// Ambil range tahun dari data transaksi barang keluar
+$sql = $koneksi->query("SELECT 
+    MIN(YEAR(tanggal)) as tahun_awal, 
+    MAX(YEAR(tanggal)) as tahun_akhir 
+FROM barang_keluar");
+$row = $sql->fetch_assoc();
+
+// Jika data kosong, fallback ke tahun sekarang
+$tahun_awal = $row['tahun_awal'] ? $row['tahun_awal'] : date('Y');
+$tahun_akhir = $row['tahun_akhir'] ? $row['tahun_akhir'] : date('Y');
+
+// Cetak select tahun
 echo "<select name='thn' class='form-control'>";
-for ($a=2018;$a<=$now;$a++)
-{
-     echo "<option value='$a'>$a</option>";
+for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+    $selected = ($a == date('Y')) ? "selected" : "";
+    echo "<option value='$a' $selected>$a</option>";
 }
 echo "</select>";
 ?>
+
 </div>
         
 	<input type="submit" class="" name="submit" value="Export to Excel">
@@ -80,15 +92,27 @@ echo "</select>";
                     </select>
                 </div>
                 <div class="col-md-3">
-                <?php
-$now=date('Y');
+<?php
+// Ambil range tahun dari data transaksi barang keluar
+$sql = $koneksi->query("SELECT 
+    MIN(YEAR(tanggal)) as tahun_awal, 
+    MAX(YEAR(tanggal)) as tahun_akhir 
+FROM barang_keluar");
+$row = $sql->fetch_assoc();
+
+// Jika data kosong, fallback ke tahun sekarang
+$tahun_awal = $row['tahun_awal'] ? $row['tahun_awal'] : date('Y');
+$tahun_akhir = $row['tahun_akhir'] ? $row['tahun_akhir'] : date('Y');
+
+// Cetak select tahun
 echo "<select name='thn' class='form-control'>";
-for ($a=2018;$a<=$now;$a++)
-{
-     echo "<option value='$a'>$a</option>";
+for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+    $selected = ($a == date('Y')) ? "selected" : "";
+    echo "<option value='$a' $selected>$a</option>";
 }
 echo "</select>";
 ?>
+
 </div>
 
 

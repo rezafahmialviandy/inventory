@@ -46,15 +46,21 @@
         			</select>
         		</div>
         		<div class="col-md-3">
-        		<?php
-$now=date('Y');
+<?php
+// Ambil range tahun dari data transaksi barang masuk
+$sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM barang_masuk");
+$row_tahun = $sql_tahun->fetch_assoc();
+$tahun_awal = $row_tahun['tahun_awal'] ? $row_tahun['tahun_awal'] : date('Y');
+$tahun_akhir = $row_tahun['tahun_akhir'] ? $row_tahun['tahun_akhir'] : date('Y');
+
 echo "<select name='thn' class='form-control'>";
-for ($a=2018;$a<=$now;$a++)
-{
-     echo "<option value='$a'>$a</option>";
+for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+    $selected = ($a == date('Y')) ? "selected" : "";
+    echo "<option value='$a' $selected>$a</option>";
 }
 echo "</select>";
 ?>
+
 </div>
         
 	<input type="submit" class="" name="submit" value="Export to Excel">
@@ -84,15 +90,21 @@ echo "</select>";
                     </select>
                 </div>
                 <div class="col-md-3">
-                <?php
-$now=date('Y');
+<?php
+// Ambil range tahun dari data transaksi barang masuk
+$sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM barang_masuk");
+$row_tahun = $sql_tahun->fetch_assoc();
+$tahun_awal = $row_tahun['tahun_awal'] ? $row_tahun['tahun_awal'] : date('Y');
+$tahun_akhir = $row_tahun['tahun_akhir'] ? $row_tahun['tahun_akhir'] : date('Y');
+
 echo "<select name='thn' class='form-control'>";
-for ($a=2018;$a<=$now;$a++)
-{
-     echo "<option value='$a'>$a</option>";
+for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+    $selected = ($a == date('Y')) ? "selected" : "";
+    echo "<option value='$a' $selected>$a</option>";
 }
 echo "</select>";
 ?>
+
 </div>
 
 
