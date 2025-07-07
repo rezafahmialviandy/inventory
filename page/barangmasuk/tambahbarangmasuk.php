@@ -54,7 +54,7 @@ $tanggal_masuk = date("Y-m-d");
             <label for="">Tanggal Masuk</label>
             <div class="form-group">
               <div class="form-line">
-                <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" value="<?php echo $tanggal_masuk; ?>" />
+                <input type="date" name="tanggal_masuk" class="form-control" id="tanggal_masuk" value="<?php echo $tanggal_masuk; ?>" required />
               </div>
             </div>
 
@@ -78,7 +78,7 @@ $tanggal_masuk = date("Y-m-d");
             <label for="">Jumlah Masuk</label>
             <div class="form-group">
               <div class="form-line">
-                <input type="number" name="jumlahmasuk" id="jumlahmasuk" onkeyup="sum()" class="form-control" required />
+                <input type="number" name="jumlahmasuk" id="jumlahmasuk" onkeyup="sum()" class="form-control" required min="1" />
               </div>
             </div>
 
@@ -110,30 +110,35 @@ $tanggal_masuk = date("Y-m-d");
           </form>
 
           <?php
-          if (isset($_POST['simpan'])) {
-              $id_transaksi = $_POST['id_transaksi'];
-              $tanggal = $_POST['tanggal_masuk'];
-              $barang = $_POST['barang'];
-              $pecah_barang = explode(".", $barang);
-              $kode_barang = $pecah_barang[0];
-              $nama_barang = $pecah_barang[1];
-              $jumlah = $_POST['jumlahmasuk'];
-              $pengirim = $_POST['pengirim'];
+         if (isset($_POST['simpan'])) {
+    $id_transaksi = $_POST['id_transaksi'];
+    $tanggal = $_POST['tanggal_masuk'];
+    $barang = $_POST['barang'];
+    $pecah_barang = explode(".", $barang);
+    $kode_barang = $pecah_barang[0];
+    $nama_barang = $pecah_barang[1];
+    $jumlah = isset($_POST['jumlahmasuk']) ? intval($_POST['jumlahmasuk']) : 0;
+    $pengirim = $_POST['pengirim'];
 
-              // Jika ingin menambah satuan, tambahkan input satuan di form di atas.
-              // $satuan = $_POST['satuan'];
+    // Validasi minimum jumlah
+    if ($jumlah < 1) {
+        echo "<script>alert('Jumlah Masuk minimal 1!'); window.history.back();</script>";
+    } else {
+        $sql = $koneksi->query("INSERT INTO barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah, pengirim)
+              VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$pengirim')");
+        // UPDATE stok di gudang!
+        $koneksi->query("UPDATE gudang SET jumlah = jumlah + $jumlah WHERE kode_barang = '$kode_barang'");
+        if ($sql) {
+            ?>
+            <script type="text/javascript">
+                alert("Simpan Data Berhasil");
+                window.location.href = "?page=barangmasuk";
+            </script>
+            <?php
+        }
+    }
+}
 
-              $sql = $koneksi->query("INSERT INTO barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah, pengirim)
-                        VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$pengirim')");
-              if ($sql) {
-                  ?>
-                  <script type="text/javascript">
-                      alert("Simpan Data Berhasil");
-                      window.location.href = "?page=barangmasuk";
-                  </script>
-                  <?php
-              }
-          }
           ?>
         </div>
       </div>
