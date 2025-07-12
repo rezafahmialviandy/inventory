@@ -35,8 +35,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['login'])) {
             // Get user level from DB
             $level = $data['level'];
 
-            if ($level === 'superadmin') {
-                $_SESSION['superadmin'] = $data['id'];
+            if ($level === 'admin') {
+                $_SESSION['admin'] = $data['id'];
                 header("Location: index3.php");
                 exit;
             } elseif ($level === 'petugas') {

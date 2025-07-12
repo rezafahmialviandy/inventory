@@ -8,7 +8,7 @@
 	$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
 
 	
-if(empty($_SESSION['superadmin'])){
+if(empty($_SESSION['admin'])){
     
     header("location:index.php");
   }
@@ -71,8 +71,8 @@ if(empty($_SESSION['superadmin'])){
 	  
 
  <?php
-   if ($_SESSION['superadmin']) {
-	   $user = $_SESSION['superadmin'];
+   if ($_SESSION['admin']) {
+	   $user = $_SESSION['admin'];
    }
    $sql =$koneksi->query("select * from users where id='$user'");
    $data = $sql->fetch_assoc();
