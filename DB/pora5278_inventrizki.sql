@@ -121,7 +121,7 @@ CREATE TABLE IF NOT EXISTS `users` (
 
 -- Dumping data for table pora5278_inventrizki.users: ~3 rows (approximately)
 INSERT INTO `users` (`id`, `nik`, `nama`, `alamat`, `telepon`, `username`, `password`, `level`, `foto`) VALUES
-	(1, '1900120001', 'Rizki', '', '0811228890', 'rizki', '$2y$10$nUIglaVvTwg/hm75F2mwAO6qrI7J1IOobNLdSESEdJJ6iRIblG/vK', 'superadmin', 'Desktop - 48.png'),
+	(1, '1900120001', 'Rizki', '', '0811228890', 'rizki', '$2y$10$nUIglaVvTwg/hm75F2mwAO6qrI7J1IOobNLdSESEdJJ6iRIblG/vK', 'admin', 'Desktop - 48.png'),
 	(2, '1900126005', 'aryamurti', '', '085546982011', 'arya', '5882985c8b1e2dce2763072d56a1d6e5', 'petugas', 'Desktop - 48.png');
 
 -- Dumping structure for trigger pora5278_inventrizki.barang_keluar
