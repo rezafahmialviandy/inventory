@@ -17,9 +17,9 @@
 -- Dumping structure for table pora5278_inventrizki.barang_keluar
 CREATE TABLE IF NOT EXISTS `barang_keluar` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_transaksi` varchar(10) NOT NULL,
+  `id_transaksi` varchar(50) NOT NULL,
   `tanggal` date NOT NULL,
-  `kode_barang` varchar(10) NOT NULL DEFAULT '0',
+  `kode_barang` varchar(50) NOT NULL DEFAULT '0',
   `nama_barang` varchar(50) NOT NULL DEFAULT '0',
   `jumlah` int(11) NOT NULL DEFAULT 0,
   PRIMARY KEY (`id`)
@@ -33,9 +33,9 @@ INSERT INTO `barang_keluar` (`id`, `id_transaksi`, `tanggal`, `kode_barang`, `na
 -- Dumping structure for table pora5278_inventrizki.barang_masuk
 CREATE TABLE IF NOT EXISTS `barang_masuk` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `id_transaksi` varchar(10) NOT NULL,
+  `id_transaksi` varchar(50) NOT NULL,
   `tanggal` date NOT NULL,
-  `kode_barang` varchar(10) NOT NULL,
+  `kode_barang` varchar(50) NOT NULL,
   `nama_barang` varchar(50) NOT NULL,
   `pengirim` varchar(20) NOT NULL,
   `jumlah` int(11) NOT NULL DEFAULT 0,
