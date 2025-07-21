@@ -23,6 +23,7 @@
 											
 											<th>Jumlah Barang</th>
 											<th>Satuan</th>
+                      <th>Supplier</th>
 											<th>Pengaturan</th>
                                          
                                         </tr>
@@ -42,6 +43,7 @@
                                         <td><?php echo $data['jenis_barang'] ?></td>
                                         <td><?php echo ($data['jumlah'] === null || $data['jumlah'] === "" ? "0" : $data['jumlah']); ?></td>
                                         <td><?php echo $data['satuan'] ?></td>
+                                        <td><?php echo $data['supplier'] ?></td>
                                         <td>
                                             <a href="?page=gudang&aksi=ubahgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-success" >Ubah</a>
                                             <a onclick="return confirm('Apakah anda yakin akan menghapus data ini?')" href="?page=gudang&aksi=hapusgudang&kode_barang=<?php echo $data['kode_barang'] ?>" class="btn btn-danger" >Hapus</a>

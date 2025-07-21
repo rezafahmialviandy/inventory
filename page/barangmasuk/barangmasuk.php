@@ -22,7 +22,6 @@
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>
 										
-											<th>Pengirim</th>
 											
 										
 										
@@ -50,7 +49,6 @@
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											
-											<td><?php echo $data['pengirim'] ?></td>
 									
                                          
 											<td><?php echo $data['jumlah'] ?></td>

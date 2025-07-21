@@ -10,7 +10,7 @@ function sum() {
 </script>
 
 <?php 
-$koneksi = new mysqli("localhost","pora5278_fahmi","Au1b839@@","pora5278_inventrizki");
+$koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
 // Generate kode transaksi otomatis
 $no = mysqli_query($koneksi, "select id_transaksi from barang_masuk order by id_transaksi desc limit 1");
@@ -91,51 +91,36 @@ $tanggal_masuk = date("Y-m-d");
 
             <div class="tampung1"></div>
 
-            <label for="">Supplier</label>
-            <div class="form-group">
-              <div class="form-line">
-                <select name="pengirim" class="form-control" required>
-                  <option value="">-- Pilih Supplier  --</option>
-                  <?php
-                  $sql = $koneksi->query("select * from tb_supplier order by nama_supplier");
-                  while ($data = $sql->fetch_assoc()) {
-                      echo "<option value='$data[nama_supplier]'>$data[nama_supplier]</option>";
-                  }
-                  ?>
-                </select>
-              </div>
-            </div>
-
             <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
           </form>
 
           <?php
-        if (isset($_POST['simpan'])) {
-    $id_transaksi = $_POST['id_transaksi'];
-    $tanggal = $_POST['tanggal_masuk'];
-    $barang = $_POST['barang'];
-    $pecah_barang = explode(".", $barang);
-    $kode_barang = $pecah_barang[0];
-    $nama_barang = $pecah_barang[1];
-    $jumlah = isset($_POST['jumlahmasuk']) ? intval($_POST['jumlahmasuk']) : 0;
-    $pengirim = $_POST['pengirim'];
+          if (isset($_POST['simpan'])) {
+            $id_transaksi = $_POST['id_transaksi'];
+            $tanggal = $_POST['tanggal_masuk'];
+            $barang = $_POST['barang'];
+            $pecah_barang = explode(".", $barang);
+            $kode_barang = $pecah_barang[0];
+            $nama_barang = $pecah_barang[1];
+            $jumlah = isset($_POST['jumlahmasuk']) ? intval($_POST['jumlahmasuk']) : 0;
 
-    // Validasi minimum jumlah
-    if ($jumlah < 1) {
-        echo "<script>alert('Jumlah Masuk minimal 1!'); window.history.back();</script>";
-    } else {
-        // 1. Simpan ke barang_masuk
-        $sql = $koneksi->query("INSERT INTO barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah, pengirim)
-            VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah','$pengirim')");
-        // 2. Update stok di gudang sesuai kode_barang
-        $koneksi->query("UPDATE gudang SET jumlah = jumlah + $jumlah WHERE kode_barang = '$kode_barang'");
-        if ($sql) {
-            echo "<script>alert('Simpan Data Berhasil'); window.location.href = '?page=barangmasuk';</script>";
-        }
-    }
-}
+            // Validasi jumlah
+            if ($jumlah < 1) {
+                echo "<script>alert('Jumlah Masuk minimal 1!'); window.history.back();</script>";
+            } else {
+                // 1. Simpan ke barang_masuk
+                $sql = $koneksi->query("INSERT INTO barang_masuk (id_transaksi, tanggal, kode_barang, nama_barang, jumlah) 
+                                        VALUES('$id_transaksi','$tanggal','$kode_barang','$nama_barang','$jumlah')");
 
-
+                // 2. Update stok di gudang sesuai kode_barang
+                if ($sql) {
+                    $koneksi->query("UPDATE gudang SET jumlah = jumlah + $jumlah WHERE kode_barang = '$kode_barang'");
+                    echo "<script>alert('Simpan Data Berhasil'); window.location.href = '?page=barangmasuk';</script>";
+                } else {
+                    echo "<script>alert('Terjadi kesalahan saat menyimpan data!'); window.history.back();</script>";
+                }
+            }
+          }
           ?>
         </div>
       </div>

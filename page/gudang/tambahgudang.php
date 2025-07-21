@@ -81,11 +81,28 @@ $jumlah = 0;
               </div>
             </div>
 
+
+            <label for="">Supplier</label>
+            <div class="form-group">
+              <div class="form-line">
+                <select name="supplier" class="form-control" required>
+                  <option value="">-- Pilih Supplier --</option>
+                  <?php
+                  // Query untuk mengambil data dari tabel tb_supplier
+                  $sql_supplier = $koneksi->query("SELECT * FROM tb_supplier ORDER BY nama_supplier");
+                  while ($data_supplier = $sql_supplier->fetch_assoc()) {
+                    echo "<option value='$data_supplier[nama_supplier].$data_supplier[nama_supplier]'>$data_supplier[nama_supplier]</option>";
+                  }
+                  ?>
+                </select>
+              </div>
+            </div>
+
             <input type="submit" name="simpan" value="Simpan" class="btn btn-primary">
           </form>
 
           <?php
-          if (isset($_POST['simpan'])) {
+            if (isset($_POST['simpan'])) {
               $kode_barang = $_POST['kode_barang'];
               $nama_barang = $_POST['nama_barang'];
 
@@ -94,29 +111,34 @@ $jumlah = 0;
               $pecah_jenis = explode(".", $jenis_barang_raw);
               $jenis_barang = isset($pecah_jenis[1]) ? $pecah_jenis[1] : '';
 
-              // Jumlah
-              $jumlah = $_POST['jumlah'];
-              if ($jumlah === "" || $jumlah === null) {
-                  $jumlah = 0;
-              }
-
               // Satuan Barang
               $satuan_raw = $_POST['satuan'];
               $pecah_satuan = explode(".", $satuan_raw);
               $satuan = isset($pecah_satuan[1]) ? $pecah_satuan[1] : '';
 
-              $sql = $koneksi->query("INSERT INTO gudang (kode_barang, nama_barang, jenis_barang, jumlah, satuan) 
-                        VALUES('$kode_barang','$nama_barang','$jenis_barang','$jumlah','$satuan')");
-              
-              if ($sql) {
-                  ?>
-                  <script type="text/javascript">
-                    alert("Data Berhasil Disimpan");
-                    window.location.href = "?page=gudang";
-                  </script>
-                  <?php
+              // Supplier
+              $supplier_raw = $_POST['supplier'];
+
+              // Jumlah
+              $jumlah = $_POST['jumlah'];
+              if ($jumlah === "" || $jumlah === null) {
+                $jumlah = 0;
               }
-          }
+
+              // Menyimpan data ke tabel gudang
+              $sql = $koneksi->query("INSERT INTO gudang (kode_barang, nama_barang, jenis_barang, jumlah, satuan, supplier) 
+                        VALUES('$kode_barang','$nama_barang','$jenis_barang','$jumlah','$satuan','$supplier')");
+
+              if ($sql) {
+                ?>
+                <script type="text/javascript">
+                  alert("Data Berhasil Disimpan");
+                  window.location.href = "?page=gudang";
+                </script>
+                <?php
+              }
+            }
+
           ?>
         </div>
       </div>

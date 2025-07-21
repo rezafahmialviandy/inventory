@@ -158,6 +158,14 @@ if(empty($_SESSION['admin'])){
         </div>
       </li>
 
+
+
+      	<li class="nav-item active">
+        <a class="nav-link" href="?page=requestbarang" aria-expanded="true">
+          <i class="fas fa-fw fa-folder"></i>
+          <span>Request Barang</span>
+        </a>
+      </li>
 	  
 	  
 	      <!-- Heading -->
@@ -179,6 +187,7 @@ if(empty($_SESSION['admin'])){
             <a class="collapse-item" href="?page=laporan_barangmasuk">Laporan Barang Masuk</a>
             <a class="collapse-item" href="?page=laporan_gudang">Laporan Stok Gudang</a>
             <a class="collapse-item" href="?page=laporan_barangkeluar">Laporan Barang Keluar</a> 
+            <a class="collapse-item" href="?page=laporan_requestbarang">Laporan Request Barang</a> 
           </div>
         </div>
       </li>
@@ -319,12 +328,21 @@ if(empty($_SESSION['admin'])){
 				    if ($aksi == "tambahbarangmasuk") {
 					   include "page/barangmasuk/tambahbarangmasuk.php";
 				   }
-				    if ($aksi == "ubahbarangmasuk") {
-					   include "page/barangmasuk/ubahbarangmasuk.php";
-				   }
-				   
 				    if ($aksi == "hapusbarangmasuk") {
 					   include "page/barangmasuk/hapusbarangmasuk.php";
+				   }
+			   }
+
+
+         	if ($page == "requestbarang") {
+				   if ($aksi == "") {
+					   include "page/requestbarang/requestbarang.php";
+				   }
+				    if ($aksi == "tambahrequestbarang") {
+					   include "page/requestbarang/tambahrequestbarang.php";
+				   }
+				    if ($aksi == "hapusrequestbarang") {
+					   include "page/requestbarang/hapusrequestbarang.php";
 				   }
 			   }
 	
@@ -353,10 +371,6 @@ if(empty($_SESSION['admin'])){
 				    if ($aksi == "tambahbarangkeluar") {
 					   include "page/barangkeluar/tambahbarangkeluar.php";
 				   }
-				    if ($aksi == "ubahbarangkeluar") {
-					   include "page/barangkeluar/ubahbarangkeluar.php";
-				   }
-				   
 				    if ($aksi == "hapusbarangkeluar") {
 					   include "page/barangkeluar/hapusbarangkeluar.php";
 				   }
@@ -384,7 +398,12 @@ if(empty($_SESSION['admin'])){
 					   include "page/laporan/laporan_barangkeluar.php";
 				   }
 					}
-		
+
+				    if ($page == "laporan_requestbarang") {
+				   if ($aksi == "") {
+					   include "page/laporan/laporan_requestbarang.php";
+				   }
+					}
 			   
 			     
 			   if ($page == "") {

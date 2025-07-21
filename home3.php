@@ -129,8 +129,8 @@ while ($row = $sql->fetch_assoc()) {
 $D = array_sum($jumlahBulanan);
 
 // --- Parameter EOQ --- //
-$S = isset($_GET['S']) ? (int)$_GET['S'] : 45000;
-$H = isset($_GET['H']) ? (int)$_GET['H'] : 100000;
+$S = isset($_GET['S']) ? (int)$_GET['S'] : 50000;
+$H = isset($_GET['H']) ? (int)$_GET['H'] : 10000;
 $EOQ = $D > 0 ? sqrt(2 * $D * $S / $H) : 0;
 ?>
 
@@ -234,7 +234,7 @@ $EOQ = $D > 0 ? sqrt(2 * $D * $S / $H) : 0;
       <br>
       EOQ = √(2 × <?php echo $D; ?> × <?php echo $S; ?> / <?php echo $H; ?>)
       <br>
-      = <b style="color:#2e59d9;"><?php echo round($EOQ, 2); ?></b> pcs
+      = <b style="color:#2e59d9;"><?php echo round($EOQ, 2); ?></b> pcs Ayam
     </div>
   </div>
 </div>
@@ -245,7 +245,7 @@ $EOQ = $D > 0 ? sqrt(2 * $D * $S / $H) : 0;
             Biaya Pesan/Pesanan (S): Rp<?php echo number_format($S,0,',','.'); ?><br>
             Biaya Simpan/Unit/Tahun (H): Rp<?php echo number_format($H,0,',','.'); ?><br>
             <span style="color:red">
-                Nilai EOQ Optimal: <b><?php echo round($EOQ); ?></b> pcs
+                Nilai EOQ Optimal: <b><?php echo round($EOQ); ?></b> pcs Ayam
             </span>
 
             </center>
