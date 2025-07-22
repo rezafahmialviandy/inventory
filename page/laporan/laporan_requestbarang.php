@@ -2,105 +2,45 @@
 // Koneksi Database
 $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
-// Cek koneksi
-if ($koneksi->connect_error) {
-    die("Connection failed: " . $koneksi->connect_error);
-}
+// Default
+$bln = $_POST['bln'] ?? 'all';
+$thn = $_POST['thn'] ?? date('Y');
 
-// Inisialisasi variabel filter
-$bln = 'all';
-$thn = date('Y');
+// Ambil range tahun
+$sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM request_barang");
+$row_tahun = $sql_tahun->fetch_assoc();
+$tahun_awal = $row_tahun['tahun_awal'] ?? date('Y');
+$tahun_akhir = $row_tahun['tahun_akhir'] ?? date('Y');
 
-// Ambil filter dari POST jika form di-submit
-if (isset($_POST['submit2'])) {
-    $bln = isset($_POST['bln']) ? $_POST['bln'] : 'all';
-    $thn = isset($_POST['thn']) ? $_POST['thn'] : date('Y');
-}
-
-// Query untuk mengambil data berdasarkan filter bulan dan tahun
-$query = "SELECT * FROM request_barang WHERE YEAR(tanggal) = ?";
-$params = [$thn];
-$types = "s";
-
+// Query data berdasarkan filter
+$query = "SELECT * FROM request_barang WHERE YEAR(tanggal) = '$thn'";
 if ($bln != 'all') {
-    $query .= " AND MONTH(tanggal) = ?";
-    $params[] = $bln;
-    $types .= "s";
+    $query .= " AND MONTH(tanggal) = '$bln'";
 }
-
-$query .= " ORDER BY tanggal DESC";
-
-// Gunakan prepared statement untuk keamanan
-$stmt = $koneksi->prepare($query);
-$stmt->bind_param($types, ...$params);
-$stmt->execute();
-$result = $stmt->get_result();
+$sql = $koneksi->query($query);
 ?>
 
-<!-- Form untuk Export PDF -->
-<form action="page/laporan/export_laporan_requestbarang_pdf.php" method="post">
+<!-- Form untuk Filter dan Export -->
+<form method="post" action="">
     <div class="row form-group">
-        <div class="col-md-5">
+        <!-- BULAN -->
+        <div class="col-md-4">
             <select class="form-control" name="bln">
-                <option value="all" <?php echo ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
-                <option value="1" <?php echo ($bln == '1') ? 'selected' : ''; ?>>January</option>
-                <option value="2" <?php echo ($bln == '2') ? 'selected' : ''; ?>>February</option>
-                <option value="3" <?php echo ($bln == '3') ? 'selected' : ''; ?>>March</option>
-                <option value="4" <?php echo ($bln == '4') ? 'selected' : ''; ?>>April</option>
-                <option value="5" <?php echo ($bln == '5') ? 'selected' : ''; ?>>May</option>
-                <option value="6" <?php echo ($bln == '6') ? 'selected' : ''; ?>>June</option>
-                <option value="7" <?php echo ($bln == '7') ? 'selected' : ''; ?>>July</option>
-                <option value="8" <?php echo ($bln == '8') ? 'selected' : ''; ?>>August</option>
-                <option value="9" <?php echo ($bln == '9') ? 'selected' : ''; ?>>September</option>
-                <option value="10" <?php echo ($bln == '10') ? 'selected' : ''; ?>>October</option>
-                <option value="11" <?php echo ($bln == '11') ? 'selected' : ''; ?>>November</option>
-                <option value="12" <?php echo ($bln == '12') ? 'selected' : ''; ?>>December</option>
-            </select>
-        </div>
-
-        <div class="col-md-3">
-            <?php
-            // Ambil range tahun dari data transaksi barang masuk
-            $sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM request_barang");
-            $row_tahun = $sql_tahun->fetch_assoc();
-            $tahun_awal = $row_tahun['tahun_awal'] ? $row_tahun['tahun_awal'] : date('Y');
-            $tahun_akhir = $row_tahun['tahun_akhir'] ? $row_tahun['tahun_akhir'] : date('Y');
-            ?>
-            <select name="thn" class="form-control">
+                <option value="all" <?= ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
                 <?php
-                for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
-                    $selected = ($a == $thn) ? "selected" : "";
-                    echo "<option value='$a' $selected>$a</option>";
+                $bulan_arr = [
+                    1 => "January", 2 => "February", 3 => "March", 4 => "April",
+                    5 => "May", 6 => "June", 7 => "July", 8 => "August",
+                    9 => "September", 10 => "October", 11 => "November", 12 => "December"
+                ];
+                foreach ($bulan_arr as $key => $val) {
+                    echo "<option value='$key' " . ($bln == $key ? 'selected' : '') . ">$val</option>";
                 }
                 ?>
             </select>
         </div>
 
-        <input type="submit" class="btn btn-primary" name="submit" value="Export to PDF">
-    </div>
-</form>
-
-<!-- Form untuk menampilkan data -->
-<form id="Myform1" method="post">
-    <div class="row form-group">
-        <div class="col-md-5">
-            <select class="form-control" name="bln">
-                <option value="all" <?php echo ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
-                <option value="1" <?php echo ($bln == '1') ? 'selected' : ''; ?>>January</option>
-                <option value="2" <?php echo ($bln == '2') ? 'selected' : ''; ?>>February</option>
-                <option value="3" <?php echo ($bln == '3') ? 'selected' : ''; ?>>March</option>
-                <option value="4" <?php echo ($bln == '4') ? 'selected' : ''; ?>>April</option>
-                <option value="5" <?php echo ($bln == '5') ? 'selected' : ''; ?>>May</option>
-                <option value="6" <?php echo ($bln == '6') ? 'selected' : ''; ?>>June</option>
-                <option value="7" <?php echo ($bln == '7') ? 'selected' : ''; ?>>July</option>
-                <option value="8" <?php echo ($bln == '8') ? 'selected' : ''; ?>>August</option>
-                <option value="9" <?php echo ($bln == '9') ? 'selected' : ''; ?>>September</option>
-                <option value="10" <?php echo ($bln == '10') ? 'selected' : ''; ?>>October</option>
-                <option value="11" <?php echo ($bln == '11') ? 'selected' : ''; ?>>November</option>
-                <option value="12" <?php echo ($bln == '12') ? 'selected' : ''; ?>>December</option>
-            </select>
-        </div>
-
+        <!-- TAHUN -->
         <div class="col-md-3">
             <select name="thn" class="form-control">
                 <?php
@@ -112,14 +52,18 @@ $result = $stmt->get_result();
             </select>
         </div>
 
-        <input type="submit" class="btn btn-success" name="submit2" value="Tampilkan">
+        <!-- TOMBOL -->
+        <div class="col-md-5">
+            <button type="submit" class="btn btn-primary" name="submit2">Tampilkan</button>
+            <button type="submit" class="btn btn-danger" formaction="page/laporan/export_laporan_requestbarang_pdf.php" formtarget="_blank">Export to PDF</button>
+        </div>
     </div>
 </form>
 
-<!-- Tabel untuk Menampilkan Data -->
-<div class="tampung1">
+<!-- TABEL HASIL -->
+<div class="tampung1 mt-3">
     <div class="table-responsive">
-        <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+        <table class="table table-bordered" id="dataTable" width="100%">
             <thead>
                 <tr>
                     <th>No</th>
@@ -134,25 +78,24 @@ $result = $stmt->get_result();
             <tbody>
                 <?php
                 $no = 1;
-                while ($data = $result->fetch_assoc()) {
+                if ($sql->num_rows > 0) {
+                    while ($data = $sql->fetch_assoc()) {
+                        echo "<tr>
+                            <td>$no</td>
+                            <td>{$data['id_request']}</td>
+                            <td>{$data['tanggal']}</td>
+                            <td>{$data['kode_barang']}</td>
+                            <td>{$data['nama_barang']}</td>
+                            <td>{$data['supplier']}</td>
+                            <td>{$data['jumlah']}</td>
+                        </tr>";
+                        $no++;
+                    }
+                } else {
+                    echo "<tr><td colspan='7' class='text-center'>Tidak ada data ditemukan.</td></tr>";
+                }
                 ?>
-                    <tr>
-                        <td><?php echo $no++; ?></td>
-                        <td><?php echo htmlspecialchars($data['id_request']); ?></td>
-                        <td><?php echo htmlspecialchars($data['tanggal']); ?></td>
-                        <td><?php echo htmlspecialchars($data['kode_barang']); ?></td>
-                        <td><?php echo htmlspecialchars($data['nama_barang']); ?></td>
-                        <td><?php echo htmlspecialchars($data['supplier']); ?></td>
-                        <td><?php echo htmlspecialchars($data['jumlah']); ?></td>
-                    </tr>
-                <?php } ?>
             </tbody>
         </table>
     </div>
 </div>
-
-<?php
-// Tutup statement dan koneksi
-$stmt->close();
-$koneksi->close();
-?>
