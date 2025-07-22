@@ -3,8 +3,8 @@
 $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
 // Tangkap filter dari form
-$bln = $_POST['bln'] ?? 'all';
-$thn = $_POST['thn'] ?? date('Y');
+$bln = isset($_POST['bln']) ? $_POST['bln'] : 'all';
+$thn = isset($_POST['thn']) ? $_POST['thn'] : date('Y');
 
 // Ambil range tahun dari data
 $sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM barang_keluar");
@@ -36,61 +36,39 @@ $bulan_arr = [
     <div class="card-body">
 
       <form method="post">
-  <div class="row form-group align-items-center">
-    <div class="col-md-4">
-      <select class="form-control" name="bln">
-        <option value="all" <?= ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
-        <?php
-        $bulan_arr = [
-          1 => "January", 2 => "February", 3 => "March", 4 => "April",
-          5 => "May", 6 => "June", 7 => "July", 8 => "August",
-          9 => "September", 10 => "October", 11 => "November", 12 => "December"
-        ];
-        foreach ($bulan_arr as $key => $val) {
-          echo "<option value='$key'" . ($bln == $key ? ' selected' : '') . ">$val</option>";
-        }
-        ?>
-      </select>
-    </div>
+        <div class="row form-group align-items-center">
+          <div class="col-md-4">
+            <select class="form-control" name="bln" onchange="this.form.submit()">
+              <option value="all" <?= ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
+              <?php
+              foreach ($bulan_arr as $key => $val) {
+                echo "<option value='$key'" . ($bln == $key ? ' selected' : '') . ">$val</option>";
+              }
+              ?>
+            </select>
+          </div>
 
-    <div class="col-md-2">
-      <select name="thn" class="form-control">
-        <?php
-        for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
-          $selected = ($a == $thn) ? "selected" : "";
-          echo "<option value='$a' $selected>$a</option>";
-        }
-        ?>
-      </select>
-    </div>
+          <div class="col-md-2">
+            <select name="thn" class="form-control" onchange="this.form.submit()">
+              <?php
+              for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+                $selected = ($a == $thn) ? "selected" : "";
+                echo "<option value='$a' $selected>$a</option>";
+              }
+              ?>
+            </select>
+          </div>
 
-    <div class="col-md-auto">
-      <button type="submit" class="btn btn-primary" name="submit2">Tampilkan</button>
-    </div>
-
-    <div class="col-md-auto">
-      <button type="submit"
-              class="btn btn-success"
-              formaction="page/laporan/export_laporan_barangkeluar_pdf.php"
-              formtarget="_blank">
-        Export to PDF
-      </button>
-    </div>
-  </div>
-</form>
-
-
-      <?php
-      // Jika tombol Export ditekan, redirect ke file export dengan data POST
-      if ($_POST['submit'] == 'export') {
-          echo "
-          <form id='redirectExport' method='post' action='page/laporan/export_laporan_barangkeluar_pdf.php' target='_blank'>
-              <input type='hidden' name='bln' value='$bln'>
-              <input type='hidden' name='thn' value='$thn'>
-          </form>
-          <script>document.getElementById('redirectExport').submit();</script>";
-      }
-      ?>
+          <div class="col-md-auto">
+            <button type="submit"
+                    class="btn btn-success"
+                    formaction="page/laporan/export_laporan_barangkeluar_pdf.php"
+                    formtarget="_blank">
+              Export to PDF
+            </button>
+          </div>
+        </div>
+      </form>
 
       <!-- TABEL HASIL -->
       <div class="tampung2 mt-3">

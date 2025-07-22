@@ -3,8 +3,8 @@
 $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
 // Tangkap filter dari form
-$bln = $_POST['bln'] ?? 'all';
-$thn = $_POST['thn'] ?? date('Y');
+$bln = isset($_POST['bln']) ? $_POST['bln'] : 'all';
+$thn = isset($_POST['thn']) ? $_POST['thn'] : date('Y');
 
 // Ambil range tahun dari data
 $sql_tahun = $koneksi->query("SELECT MIN(YEAR(tanggal)) as tahun_awal, MAX(YEAR(tanggal)) as tahun_akhir FROM barang_masuk");
@@ -29,97 +29,85 @@ $bulan_arr = [
 
 <!-- Begin Page Content -->
 <div class="container-fluid">
-    <div class="card shadow mb-4">
-        <div class="card-header py-3">
-            <h6 class="m-0 font-weight-bold text-primary">Barang Masuk</h6>
-        </div>
-        <div class="card-body">
-
-            <form method="post" id="filterForm">
-                <div class="row form-group">
-                    <!-- PILIH BULAN -->
-                    <div class="col-md-4">
-                        <select class="form-control" name="bln">
-                            <option value="all" <?= ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
-                            <?php
-                            foreach ($bulan_arr as $key => $val) {
-                                echo "<option value='$key' " . ($bln == $key ? 'selected' : '') . ">$val</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <!-- PILIH TAHUN -->
-                    <div class="col-md-3">
-                        <select name="thn" class="form-control">
-                            <?php
-                            for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
-                                $selected = ($a == $thn) ? "selected" : "";
-                                echo "<option value='$a' $selected>$a</option>";
-                            }
-                            ?>
-                        </select>
-                    </div>
-
-                    <!-- TOMBOL TAMPIL & EXPORT -->
-                    <div class="col-md-5">
-                        <button type="submit" class="btn btn-primary" name="submit" value="tampilkan">Tampilkan</button>
-                        <button type="submit" class="btn btn-success" name="submit" value="export">Export to PDF</button>
-                    </div>
-                </div>
-            </form>
-
-            <?php
-            // Jika tombol Export ditekan, redirect ke file export dengan data POST
-            if ($_POST['submit'] == 'export') {
-                // Simpan filter ke session jika mau dipakai, atau langsung redirect
-                echo "
-                <form id='redirectExport' method='post' action='page/laporan/export_laporan_barangmasuk_pdf.php' target='_blank'>
-                    <input type='hidden' name='bln' value='$bln'>
-                    <input type='hidden' name='thn' value='$thn'>
-                </form>
-                <script>document.getElementById('redirectExport').submit();</script>";
-            }
-            ?>
-
-            <!-- TABEL HASIL -->
-            <div class="tampung1 mt-3">
-                <div class="table-responsive">
-                    <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
-                        <thead>
-                            <tr>
-                                <th>No</th>
-                                <th>Id Transaksi</th>
-                                <th>Tanggal Masuk</th>
-                                <th>Kode Barang</th>
-                                <th>Nama Barang</th>
-                                <th>Jumlah Masuk</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php
-                            $no = 1;
-                            if ($sql->num_rows > 0) {
-                                while ($data = $sql->fetch_assoc()) {
-                                    echo "<tr>
-                                        <td>{$no}</td>
-                                        <td>{$data['id_transaksi']}</td>
-                                        <td>{$data['tanggal']}</td>
-                                        <td>{$data['kode_barang']}</td>
-                                        <td>{$data['nama_barang']}</td>
-                                        <td>{$data['jumlah']}</td>
-                                    </tr>";
-                                    $no++;
-                                }
-                            } else {
-                                echo "<tr><td colspan='7' class='text-center'>Tidak ada data ditemukan.</td></tr>";
-                            }
-                            ?>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
-        </div>
+  <div class="card shadow mb-4">
+    <div class="card-header py-3">
+      <h6 class="m-0 font-weight-bold text-primary">Barang Masuk</h6>
     </div>
+    <div class="card-body">
+
+      <form method="post">
+        <div class="row form-group align-items-center">
+          <div class="col-md-4">
+            <select class="form-control" name="bln" onchange="this.form.submit()">
+              <option value="all" <?= ($bln == 'all') ? 'selected' : ''; ?>>ALL</option>
+              <?php
+              foreach ($bulan_arr as $key => $val) {
+                echo "<option value='$key'" . ($bln == $key ? ' selected' : '') . ">$val</option>";
+              }
+              ?>
+            </select>
+          </div>
+
+          <div class="col-md-2">
+            <select name="thn" class="form-control" onchange="this.form.submit()">
+              <?php
+              for ($a = $tahun_awal; $a <= $tahun_akhir; $a++) {
+                $selected = ($a == $thn) ? "selected" : "";
+                echo "<option value='$a' $selected>$a</option>";
+              }
+              ?>
+            </select>
+          </div>
+
+          <div class="col-md-auto">
+            <button type="submit"
+                    class="btn btn-success"
+                    formaction="page/laporan/export_laporan_barangmasuk_pdf.php"
+                    formtarget="_blank">
+              Export to PDF
+            </button>
+          </div>
+        </div>
+      </form>
+
+      <!-- TABEL HASIL -->
+      <div class="tampung2 mt-3">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+            <thead>
+              <tr>
+                <th>No</th>
+                <th>Id Transaksi</th>
+                <th>Tanggal Masuk</th>
+                <th>Kode Barang</th>
+                <th>Nama Barang</th>
+                <th>Jumlah Masuk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <?php
+              $no = 1;
+              if ($sql->num_rows > 0) {
+                while ($data = $sql->fetch_assoc()) {
+                  echo "<tr>
+                          <td>{$no}</td>
+                          <td>{$data['id_transaksi']}</td>
+                          <td>{$data['tanggal']}</td>
+                          <td>{$data['kode_barang']}</td>
+                          <td>{$data['nama_barang']}</td>
+                          <td>{$data['jumlah']}</td>
+                        </tr>";
+                  $no++;
+                }
+              } else {
+                echo "<tr><td colspan='6' class='text-center'>Tidak ada data ditemukan.</td></tr>";
+              }
+              ?>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
 </div>

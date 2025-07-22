@@ -19,7 +19,7 @@
 											<th>Kode Barang</th>
 											<th>Nama Barang</th>											
 											<th>Jenis Barang</th>
-											
+											<th>Supplier</th>
 											<th>Jumlah Barang</th>
 											<th>Satuan</th>
 										
@@ -42,7 +42,7 @@
 											<td><?php echo $data['kode_barang'] ?></td>
 											<td><?php echo $data['nama_barang'] ?></td>
 											<td><?php echo $data['jenis_barang'] ?></td>
-											
+											<td><?php echo $data['supplier']?></td>
 											<td><?php echo $data['jumlah'] ?></td>
 											<td><?php echo $data['satuan'] ?></td>
 								
@@ -55,7 +55,7 @@
 
 										   </tbody>
                                 </table>
-								<a href="page/laporan/export_laporan_gudang_excel.php"  class="btn btn-primary" style="margin-top:8 px"><i class="fa fa-print"></i>ExportToExcel</a>
+								<a href="page/laporan/export_laporan_gudang_pdf.php"  class="btn btn-primary" style="margin-top:8 px"><i class="fa fa-print"></i>Export To PDF</a>
 								
                   </tbody>
                 </table>

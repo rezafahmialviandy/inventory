@@ -7,8 +7,9 @@ class RequestBarangPDF extends FPDF
     private $timestamp;
     private $report_title;
     private $company_info;
+    private $filter_info;
     
-    public function __construct($bln = '', $thn = '')
+    public function __construct($filter_data = [])
     {
         parent::__construct();
         $this->po_number = 'PO' . date('Ymd') . rand(1000, 9999);
@@ -17,24 +18,58 @@ class RequestBarangPDF extends FPDF
         // Company information
         $this->company_info = [
             'name' => "D'KRIUK FRIED CHICKEN",
-            'subtitle' => 'CABANG BABELAN BEKASI',
+            'subtitle' => 'STOKIS BABELAN BEKASI',
             'company' => 'PT. RAJA RASA KULINER',
-            'address' => 'Jl. Raya Babelan No. 123, Babelan, Bekasi',
+            'address' => 'Jl. Marrakash Square, Bahagia, Kec. Babelan, Kabupaten Bekasi',
             'phone' => 'Telp: (021) 1234-5678 | Email: info@dkriuk.com'
         ];
         
-        // Set report title berdasarkan filter
-        if ($bln == 'all' || empty($bln)) {
-            $this->report_title = "LAPORAN PERMINTAAN BARANG TAHUN $thn";
-        } else {
-            $month_names = [
-                '1' => 'Januari', '2' => 'Februari', '3' => 'Maret',
-                '4' => 'April', '5' => 'Mei', '6' => 'Juni',
-                '7' => 'Juli', '8' => 'Agustus', '9' => 'September',
-                '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
-            ];
-            $month_name = $month_names[$bln] ?? "Bulan $bln";
-            $this->report_title = "LAPORAN PERMINTAAN BARANG $month_name $thn";
+        // Set filter info and report title
+        $this->setFilterInfo($filter_data);
+    }
+    
+    private function setFilterInfo($filter_data)
+    {
+        $filter_type = $filter_data['filter_type'] ?? 'monthly';
+        $bln = $filter_data['bln'] ?? '';
+        $thn = $filter_data['thn'] ?? date('Y');
+        $start_date = $filter_data['start_date'] ?? '';
+        $end_date = $filter_data['end_date'] ?? '';
+        
+        switch ($filter_type) {
+            case 'date_range':
+                if (!empty($start_date) && !empty($end_date)) {
+                    $start_formatted = $this->formatIndonesianDate($start_date);
+                    $end_formatted = $this->formatIndonesianDate($end_date);
+                    $this->report_title = "LAPORAN PERMINTAAN BARANG";
+                    $this->filter_info = "Periode: $start_formatted s/d $end_formatted";
+                } else {
+                    $this->report_title = "LAPORAN PERMINTAAN BARANG TAHUN $thn";
+                    $this->filter_info = "Filter: Semua data tahun $thn";
+                }
+                break;
+                
+            case 'yearly':
+                $this->report_title = "LAPORAN PERMINTAAN BARANG TAHUN $thn";
+                $this->filter_info = "Filter: Semua bulan tahun $thn";
+                break;
+                
+            default: // monthly
+                if ($bln == 'all' || empty($bln)) {
+                    $this->report_title = "LAPORAN PERMINTAAN BARANG TAHUN $thn";
+                    $this->filter_info = "Filter: Semua bulan tahun $thn";
+                } else {
+                    $month_names = [
+                        '1' => 'Januari', '2' => 'Februari', '3' => 'Maret',
+                        '4' => 'April', '5' => 'Mei', '6' => 'Juni',
+                        '7' => 'Juli', '8' => 'Agustus', '9' => 'September',
+                        '10' => 'Oktober', '11' => 'November', '12' => 'Desember'
+                    ];
+                    $month_name = $month_names[$bln] ?? "Bulan $bln";
+                    $this->report_title = "LAPORAN PERMINTAAN BARANG";
+                    $this->filter_info = "Periode: $month_name $thn";
+                }
+                break;
         }
     }
     
@@ -42,7 +77,7 @@ class RequestBarangPDF extends FPDF
     {
         // Background header dengan gradient effect
         $this->SetFillColor(245, 248, 250);
-        $this->Rect(0, 0, 210, 70, 'F');
+        $this->Rect(0, 0, 210, 75, 'F');
         
         // Border atas dengan warna brand
         $this->SetFillColor(220, 53, 69);
@@ -108,7 +143,15 @@ class RequestBarangPDF extends FPDF
         $this->SetXY(137, 62);
         $this->Cell(0, 4, "Timestamp: " . $this->timestamp, 0, 0);
         
-        $this->Ln(18);
+        // Filter info box (new)
+        if (!empty($this->filter_info)) {
+            $this->SetFont('Arial', '', 8);
+            $this->SetTextColor(73, 80, 87);
+            $this->SetXY(15, 70);
+            $this->Cell(180, 4, $this->filter_info, 0, 0, 'C');
+        }
+        
+        $this->Ln(20);
         
         // Reset colors
         $this->SetTextColor(0, 0, 0);
@@ -301,9 +344,9 @@ class RequestBarangPDF extends FPDF
         
         // Tanda tangan area
         $signatures = [
-            ['title' => 'Dibuat Oleh:', 'name' => 'Staff Inventory', 'pos' => 50],
-            ['title' => 'Diperiksa Oleh:', 'name' => 'Supervisor', 'pos' => 105],
-            ['title' => 'Disetujui Oleh:', 'name' => 'Manager Operasional', 'pos' => 160]
+            ['title' => 'Dibuat Oleh:', 'name' => '', 'pos' => 50],
+            ['title' => 'Diperiksa Oleh:', 'name' => '', 'pos' => 105],
+            ['title' => 'Disetujui Oleh:', 'name' => '', 'pos' => 160]
         ];
         
         foreach ($signatures as $sig) {
@@ -428,37 +471,43 @@ class RequestBarangPDF extends FPDF
 
 // Main execution dengan error handling yang lebih baik
 try {
-    // Cek apakah data POST tersedia
-    if (!isset($_POST['bln']) || !isset($_POST['thn'])) {
-        throw new Exception("Parameter bulan dan tahun harus diisi!");
-    }
-    
-    $bln = trim($_POST['bln']);
-    $thn = trim($_POST['thn']);
-    
-    // Validasi input yang lebih ketat
-    if (!is_numeric($thn) || $thn < 2020 || $thn > date('Y') + 5) {
-        throw new Exception("Tahun harus berupa angka antara 2020 hingga " . (date('Y') + 5));
-    }
-    
-    if ($bln !== 'all' && (!is_numeric($bln) || $bln < 1 || $bln > 12)) {
-        throw new Exception("Bulan harus berupa angka antara 1-12 atau 'all'");
-    }
-    
-    // Database connection dengan timeout dan charset
-    $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
-    $koneksi->set_charset("utf8");
-    
-    if ($koneksi->connect_error) {
-        throw new Exception("Koneksi database gagal: " . $koneksi->connect_error);
-    }
-    
-    // Query dengan prepared statement
-    if ($bln == 'all') {
+$filter_type = $_POST['filter_type'] ?? 'monthly';
+$bln = $_POST['bln'] ?? 'all';
+$thn = $_POST['thn'] ?? date('Y');
+$start_date = $_POST['start_date'] ?? '';
+$end_date = $_POST['end_date'] ?? '';
+
+// Database connection
+$koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
+$koneksi->set_charset("utf8");
+
+if ($koneksi->connect_error) {
+    throw new Exception("Koneksi database gagal: " . $koneksi->connect_error);
+}
+
+// Build query berdasarkan filter
+if ($filter_type === 'date_range' && !empty($start_date) && !empty($end_date)) {
+    $stmt = $koneksi->prepare("
+        SELECT id_request, tanggal, kode_barang, nama_barang, supplier, jumlah 
+        FROM request_barang 
+        WHERE DATE(tanggal) BETWEEN ? AND ?
+        ORDER BY tanggal DESC, id_request DESC
+    ");
+    $stmt->bind_param("ss", $start_date, $end_date);
+} elseif ($filter_type === 'yearly') {
+    $stmt = $koneksi->prepare("
+        SELECT id_request, tanggal, kode_barang, nama_barang, supplier, jumlah 
+        FROM request_barang 
+        WHERE YEAR(tanggal) = ?
+        ORDER BY tanggal DESC, id_request DESC
+    ");
+    $stmt->bind_param("s", $thn);
+} else {
+    if ($bln === 'all') {
         $stmt = $koneksi->prepare("
             SELECT id_request, tanggal, kode_barang, nama_barang, supplier, jumlah 
             FROM request_barang 
-            WHERE YEAR(tanggal) = ? 
+            WHERE YEAR(tanggal) = ?
             ORDER BY tanggal DESC, id_request DESC
         ");
         $stmt->bind_param("s", $thn);
@@ -466,11 +515,12 @@ try {
         $stmt = $koneksi->prepare("
             SELECT id_request, tanggal, kode_barang, nama_barang, supplier, jumlah 
             FROM request_barang 
-            WHERE MONTH(tanggal) = ? AND YEAR(tanggal) = ? 
+            WHERE MONTH(tanggal) = ? AND YEAR(tanggal) = ?
             ORDER BY tanggal DESC, id_request DESC
         ");
         $stmt->bind_param("ss", $bln, $thn);
     }
+}
     
     if (!$stmt->execute()) {
         throw new Exception("Error executing query: " . $stmt->error);
@@ -491,7 +541,7 @@ try {
     header('Last-Modified: '.gmdate('D, d M Y H:i:s').' GMT');
     
     // Buat PDF
-    $pdf = new RequestBarangPDF($bln, $thn);
+    $pdf = new RequestBarangPDF($_POST); // Kirim seluruh $_POST ke constructor
     $pdf->AliasNbPages();
     $pdf->SetAutoPageBreak(true, 30);
     $pdf->AddPage();
