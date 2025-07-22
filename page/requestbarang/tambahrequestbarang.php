@@ -1,27 +1,27 @@
 <?php 
 $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
-// Generate kode transaksi otomatis dengan tambahan elemen dinamis
-$no = mysqli_query($koneksi, "select id_request from request_barang order by id_request desc limit 1");
+// Generate kode transaksi otomatis
+$no = mysqli_query($koneksi, "SELECT id_request FROM request_barang ORDER BY id_request DESC LIMIT 1");
 $idtran = mysqli_fetch_array($no);
 $bulan = date("m");
 $tahun = date("y");
-$prefix = "REQ"; // Prefix berdasarkan jenis request (misalnya 'REQ' untuk Request)
+$prefix = "REQ";
 
 if ($idtran && $idtran['id_request']) {
     $kode = $idtran['id_request'];
-    $urut = (int)substr($kode, 9, 3); // Mengambil urutan setelah prefix 'REQ-'
+    $urut = (int)substr($kode, 9, 3);
     $tambah = $urut + 1;
 } else {
     $tambah = 1;
 }
 
 if(strlen($tambah) == 1){
-    $format = $prefix."-".$bulan.$tahun."-00".$tambah; // Format ID dengan tambahan 2 digit urutan
+    $format = $prefix."-".$bulan.$tahun."-00".$tambah;
 } else if(strlen($tambah) == 2){
-    $format = $prefix."-".$bulan.$tahun."-0".$tambah; // Format ID dengan tambahan 2 digit urutan
+    $format = $prefix."-".$bulan.$tahun."-0".$tambah;
 } else{
-    $format = $prefix."-".$bulan.$tahun."-".$tambah; // Format ID dengan urutan 3 digit
+    $format = $prefix."-".$bulan.$tahun."-".$tambah;
 }
 
 $tanggal_request = date("Y-m-d");
@@ -40,14 +40,14 @@ $tanggal_request = date("Y-m-d");
             <label for="">Id Request</label>
             <div class="form-group">
               <div class="form-line">
-                <input type="text" name="id_request" class="form-control" id="id_request" value="<?php echo $format; ?>" readonly /> 
+                <input type="text" name="id_request" class="form-control" value="<?php echo $format; ?>" readonly /> 
               </div>
             </div>
 
             <label for="">Tanggal Request</label>
             <div class="form-group">
               <div class="form-line">
-                <input type="date" name="tanggal_request" class="form-control" id="tanggal_request" value="<?php echo $tanggal_request; ?>" required />
+                <input type="date" name="tanggal_request" class="form-control" value="<?php echo $tanggal_request; ?>" required />
               </div>
             </div>
 
@@ -57,19 +57,28 @@ $tanggal_request = date("Y-m-d");
                 <select name="barang" id="cmb_barang" class="form-control" required>
                   <option value="">-- Pilih Barang  --</option>
                   <?php
-                  $sql = $koneksi->query("select * from gudang order by kode_barang");
+                  $sql = $koneksi->query("SELECT * FROM gudang ORDER BY kode_barang");
                   while ($data = $sql->fetch_assoc()) {
-                      echo "<option value='$data[kode_barang].$data[nama_barang]'>$data[kode_barang] | $data[nama_barang]</option>";
+                      echo "<option value='{$data['kode_barang']}.{$data['nama_barang']}' data-supplier='{$data['supplier']}'>
+                              {$data['kode_barang']} | {$data['nama_barang']}
+                            </option>";
                   }
                   ?>
                 </select>
               </div>
             </div>
 
+            <label for="">Supplier</label>
+            <div class="form-group">
+              <div class="form-line">
+                <input type="text" name="supplier" id="supplier" class="form-control" readonly />
+              </div>
+            </div>
+
             <label for="">Jumlah Request</label>
             <div class="form-group">
               <div class="form-line">
-                <input type="number" name="jumlahrequest" id="jumlahrequest" onkeyup="sum()" class="form-control" required min="1" />
+                <input type="number" name="jumlahrequest" id="jumlahrequest" class="form-control" required min="1" />
               </div>
             </div>
 
@@ -77,32 +86,42 @@ $tanggal_request = date("Y-m-d");
           </form>
 
           <?php
-        if (isset($_POST['simpan'])) {
-            $id_request = $_POST['id_request'];
-            $tanggal = $_POST['tanggal_request'];
-            $barang = $_POST['barang'];
-            $pecah_barang = explode(".", $barang);
-            $kode_barang = $pecah_barang[0];
-            $nama_barang = $pecah_barang[1];
+          if (isset($_POST['simpan'])) {
+              $id_request = $_POST['id_request'];
+              $tanggal = $_POST['tanggal_request'];
+              $barang = $_POST['barang'];
+              $supplier = $_POST['supplier'];
 
-            $jumlah = isset($_POST['jumlahrequest']) ? intval($_POST['jumlahrequest']) : 0;
+              $pecah_barang = explode(".", $barang);
+              $kode_barang = $pecah_barang[0];
+              $nama_barang = $pecah_barang[1];
 
-            // Validasi minimum jumlah
-            if ($jumlah < 1) {
-                echo "<script>alert('Jumlah Request minimal 1!'); window.history.back();</script>";
-            } else {
-                // 1. Simpan ke request_barang
-                $sql = $koneksi->query("INSERT INTO request_barang (id_request, tanggal, kode_barang, nama_barang, jumlah) 
-                                        VALUES('$id_request','$tanggal','$kode_barang','$nama_barang','$jumlah')");
+              $jumlah = isset($_POST['jumlahrequest']) ? intval($_POST['jumlahrequest']) : 0;
 
-                if ($sql) {
-                    echo "<script>alert('Simpan Data Berhasil'); window.location.href = '?page=requestbarang';</script>";
-                }
-            }
-        }
+              if ($jumlah < 1) {
+                  echo "<script>alert('Jumlah Request minimal 1!'); window.history.back();</script>";
+              } else {
+                  // INSERT ke database
+                  $sql = $koneksi->query("INSERT INTO request_barang (id_request, tanggal, kode_barang, nama_barang, jumlah, supplier) 
+                                          VALUES('$id_request','$tanggal','$kode_barang','$nama_barang','$jumlah','$supplier')");
+
+                  if ($sql) {
+                      echo "<script>alert('Simpan Data Berhasil'); window.location.href = '?page=requestbarang';</script>";
+                  }
+              }
+          }
           ?>
         </div>
       </div>
     </div>
   </div>
 </div>
+
+<!-- Script auto-isi supplier -->
+<script>
+document.getElementById("cmb_barang").addEventListener("change", function () {
+    const selected = this.options[this.selectedIndex];
+    const supplier = selected.getAttribute("data-supplier");
+    document.getElementById("supplier").value = supplier || "";
+});
+</script>

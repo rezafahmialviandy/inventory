@@ -91,7 +91,7 @@ $jumlah = 0;
                   // Query untuk mengambil data dari tabel tb_supplier
                   $sql_supplier = $koneksi->query("SELECT * FROM tb_supplier ORDER BY nama_supplier");
                   while ($data_supplier = $sql_supplier->fetch_assoc()) {
-                    echo "<option value='$data_supplier[nama_supplier].$data_supplier[nama_supplier]'>$data_supplier[nama_supplier]</option>";
+                    echo "<option value='$data_supplier[nama_supplier]'>$data_supplier[nama_supplier]</option>";
                   }
                   ?>
                 </select>
@@ -117,7 +117,7 @@ $jumlah = 0;
               $satuan = isset($pecah_satuan[1]) ? $pecah_satuan[1] : '';
 
               // Supplier
-              $supplier_raw = $_POST['supplier'];
+              $supplier = $_POST['supplier'];
 
               // Jumlah
               $jumlah = $_POST['jumlah'];

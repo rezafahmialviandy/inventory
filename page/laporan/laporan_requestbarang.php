@@ -2,18 +2,39 @@
 // Koneksi Database
 $koneksi = new mysqli("localhost", "pora5278_fahmi", "Au1b839@@", "pora5278_inventrizki");
 
-// Ambil filter bulan dan tahun dari form (POST)
-$bln = isset($_POST['bln']) ? $_POST['bln'] : 'all';  // Default "all" jika tidak ada pilihan bulan
-$thn = isset($_POST['thn']) ? $_POST['thn'] : date('Y'); // Default tahun sekarang jika tidak ada pilihan
-
-// Query untuk mengambil data berdasarkan filter bulan dan tahun
-$query = "SELECT * FROM request_barang WHERE YEAR(tanggal) = '$thn'";
-
-if ($bln != 'all') {
-    $query .= " AND MONTH(tanggal) = '$bln'";
+// Cek koneksi
+if ($koneksi->connect_error) {
+    die("Connection failed: " . $koneksi->connect_error);
 }
 
-$sql = $koneksi->query($query);
+// Inisialisasi variabel filter
+$bln = 'all';
+$thn = date('Y');
+
+// Ambil filter dari POST jika form di-submit
+if (isset($_POST['submit2'])) {
+    $bln = isset($_POST['bln']) ? $_POST['bln'] : 'all';
+    $thn = isset($_POST['thn']) ? $_POST['thn'] : date('Y');
+}
+
+// Query untuk mengambil data berdasarkan filter bulan dan tahun
+$query = "SELECT * FROM request_barang WHERE YEAR(tanggal) = ?";
+$params = [$thn];
+$types = "s";
+
+if ($bln != 'all') {
+    $query .= " AND MONTH(tanggal) = ?";
+    $params[] = $bln;
+    $types .= "s";
+}
+
+$query .= " ORDER BY tanggal DESC";
+
+// Gunakan prepared statement untuk keamanan
+$stmt = $koneksi->prepare($query);
+$stmt->bind_param($types, ...$params);
+$stmt->execute();
+$result = $stmt->get_result();
 ?>
 
 <!-- Form untuk Export PDF -->
@@ -55,10 +76,9 @@ $sql = $koneksi->query($query);
             </select>
         </div>
 
-        <input type="submit" class="" name="submit" value="Export to PDF">
+        <input type="submit" class="btn btn-primary" name="submit" value="Export to PDF">
     </div>
 </form>
-
 
 <!-- Form untuk menampilkan data -->
 <form id="Myform1" method="post">
@@ -92,10 +112,9 @@ $sql = $koneksi->query($query);
             </select>
         </div>
 
-        <input type="submit" class="" name="submit2" value="Tampilkan">
+        <input type="submit" class="btn btn-success" name="submit2" value="Tampilkan">
     </div>
 </form>
-
 
 <!-- Tabel untuk Menampilkan Data -->
 <div class="tampung1">
@@ -108,23 +127,23 @@ $sql = $koneksi->query($query);
                     <th>Tanggal Masuk</th>
                     <th>Kode Barang</th>
                     <th>Nama Barang</th>
-                    <th>Pengirim</th>
+                    <th>Supplier</th>
                     <th>Jumlah Masuk</th>
                 </tr>
             </thead>
             <tbody>
                 <?php
                 $no = 1;
-                while ($data = $sql->fetch_assoc()) {
+                while ($data = $result->fetch_assoc()) {
                 ?>
                     <tr>
                         <td><?php echo $no++; ?></td>
-                        <td><?php echo $data['id_request'] ?></td>
-                        <td><?php echo $data['tanggal'] ?></td>
-                        <td><?php echo $data['kode_barang'] ?></td>
-                        <td><?php echo $data['nama_barang'] ?></td>
-                        <td><?php echo $data['pengirim'] ?></td>
-                        <td><?php echo $data['jumlah'] ?></td>
+                        <td><?php echo htmlspecialchars($data['id_request']); ?></td>
+                        <td><?php echo htmlspecialchars($data['tanggal']); ?></td>
+                        <td><?php echo htmlspecialchars($data['kode_barang']); ?></td>
+                        <td><?php echo htmlspecialchars($data['nama_barang']); ?></td>
+                        <td><?php echo htmlspecialchars($data['supplier']); ?></td>
+                        <td><?php echo htmlspecialchars($data['jumlah']); ?></td>
                     </tr>
                 <?php } ?>
             </tbody>
@@ -132,3 +151,8 @@ $sql = $koneksi->query($query);
     </div>
 </div>
 
+<?php
+// Tutup statement dan koneksi
+$stmt->close();
+$koneksi->close();
+?>
